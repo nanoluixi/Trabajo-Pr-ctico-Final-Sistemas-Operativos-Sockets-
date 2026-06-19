@@ -1,0 +1,14 @@
+C:\Users\victorduski\Documents\workspace\ProyectoFinalSistemasOperativos\socket-servidor\bin\Debug\net10.0\socket-servidor.exe
+C:\Users\victorduski\Documents\workspace\ProyectoFinalSistemasOperativos\socket-servidor\bin\Debug\net10.0\socket-servidor.deps.json
+C:\Users\victorduski\Documents\workspace\ProyectoFinalSistemasOperativos\socket-servidor\bin\Debug\net10.0\socket-servidor.runtimeconfig.json
+C:\Users\victorduski\Documents\workspace\ProyectoFinalSistemasOperativos\socket-servidor\bin\Debug\net10.0\socket-servidor.dll
+C:\Users\victorduski\Documents\workspace\ProyectoFinalSistemasOperativos\socket-servidor\bin\Debug\net10.0\socket-servidor.pdb
+C:\Users\victorduski\Documents\workspace\ProyectoFinalSistemasOperativos\socket-servidor\obj\Debug\net10.0\socket-servidor.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\victorduski\Documents\workspace\ProyectoFinalSistemasOperativos\socket-servidor\obj\Debug\net10.0\socket-servidor.AssemblyInfoInputs.cache
+C:\Users\victorduski\Documents\workspace\ProyectoFinalSistemasOperativos\socket-servidor\obj\Debug\net10.0\socket-servidor.AssemblyInfo.cs
+C:\Users\victorduski\Documents\workspace\ProyectoFinalSistemasOperativos\socket-servidor\obj\Debug\net10.0\socket-servidor.csproj.CoreCompileInputs.cache
+C:\Users\victorduski\Documents\workspace\ProyectoFinalSistemasOperativos\socket-servidor\obj\Debug\net10.0\socket-servidor.dll
+C:\Users\victorduski\Documents\workspace\ProyectoFinalSistemasOperativos\socket-servidor\obj\Debug\net10.0\refint\socket-servidor.dll
+C:\Users\victorduski\Documents\workspace\ProyectoFinalSistemasOperativos\socket-servidor\obj\Debug\net10.0\socket-servidor.pdb
+C:\Users\victorduski\Documents\workspace\ProyectoFinalSistemasOperativos\socket-servidor\obj\Debug\net10.0\socket-servidor.genruntimeconfig.cache
+C:\Users\victorduski\Documents\workspace\ProyectoFinalSistemasOperativos\socket-servidor\obj\Debug\net10.0\ref\socket-servidor.dll
