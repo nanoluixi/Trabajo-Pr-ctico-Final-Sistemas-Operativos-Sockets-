@@ -1,16 +1,16 @@
 using System.Net.Sockets;
-using Text;
+using SocketCommon.Services;
 namespace User
 {
     public class UserMethods
     {
         public static string RequestUserName(Socket socket)
     {
-        TextMethods.SendText(socket, "Nombre:");
-        string? userName = TextMethods.ReceiveText(socket)?.Trim();
+        TextProtocol.SendText(socket, "Nombre:");
+        string? userName = TextProtocol.ReceiveText(socket)?.Trim();
         if (string.IsNullOrEmpty(userName) || !Validators.Validators.IsValidUserName(userName))
         {
-            TextMethods.SendText(socket, "Error. Nombre invalido");
+            TextProtocol.SendText(socket, "Error. Nombre invalido");
             return string.Empty;
         }
 

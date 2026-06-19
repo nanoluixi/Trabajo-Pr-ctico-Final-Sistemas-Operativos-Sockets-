@@ -7,14 +7,30 @@
   "targets": {
     ".NETCoreApp,Version=v10.0": {
       "socket-cliente/1.0.0": {
+        "dependencies": {
+          "SocketCommon": "1.0.0"
+        },
         "runtime": {
           "socket-cliente.dll": {}
+        }
+      },
+      "SocketCommon/1.0.0": {
+        "runtime": {
+          "SocketCommon.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       }
     }
   },
   "libraries": {
     "socket-cliente/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SocketCommon/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

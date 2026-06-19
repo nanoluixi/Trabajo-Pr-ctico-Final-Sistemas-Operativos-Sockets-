@@ -1,8 +1,10 @@
-using Text;
+
 using User;
 using Logs;
-using Services;
+
 using System.Net.Sockets;
+using SocketCommon.Services;
+
 namespace Client
 {
     public class Client
@@ -21,12 +23,12 @@ namespace Client
 
         LogMethods.LogServer($"Cliente {userName} conectado", LogsDirectory);
         LogMethods.LogUser(userName, "Sesion iniciada", UsersDirectory);
-        TextMethods.SendText(clientSocket, "Verfificado");
+        TextProtocol.SendText(clientSocket, "Verfificado");
         try
         {
             while (true)
             {
-                string command = TextMethods.ReceiveText(clientSocket);
+                string command = TextProtocol.ReceiveText(clientSocket);
                 if (command == null)
                 {
                     Console.WriteLine("Cliente desconectado de forma inesperada.");
@@ -36,7 +38,7 @@ namespace Client
                 command = command.Trim();
                 if (command.Length == 0)
                 {
-                    TextMethods.SendText(clientSocket, "Error. Comando invalido");
+                    TextProtocol.SendText(clientSocket, "Error. Comando invalido");
                     continue;
                 }
 
@@ -45,7 +47,7 @@ namespace Client
 
                 if (command == "bye")
                 {
-                    TextMethods.SendText(clientSocket, "Bye");
+                    TextProtocol.SendText(clientSocket, "Bye");
                     break;
                 }
 
@@ -54,12 +56,12 @@ namespace Client
                     string[] files = Directory.GetFiles(userFilesFolder);
                     if (files.Length == 0)
                     {
-                        TextMethods.SendText(clientSocket, string.Empty);
+                        TextProtocol.SendText(clientSocket, string.Empty);
                     }
                     else
                     {
                         string result = string.Join("\n", Array.ConvertAll(files, Path.GetFileName));
-                        TextMethods.SendText(clientSocket, result);
+                        TextProtocol.SendText(clientSocket, result);
                     }
                     continue;
                 }
@@ -69,21 +71,21 @@ namespace Client
                     string fileName = command.Substring(6).Trim();
                     if (!Validators.Validators.IsValidFileName(fileName))
                     {
-                        TextMethods.SendText(clientSocket, "Error. Comando invalido");
+                        TextProtocol.SendText(clientSocket, "Error. Comando invalido");
                         continue;
                     }
 
-                    string destinationPath = FileTransferService.GetUniqueFilePath(Path.Combine(userFilesFolder, fileName));
-                    TextMethods.SendText(clientSocket, "Listo");
+                    string destinationPath = PathHelper.GetUniqueFilePath(Path.Combine(userFilesFolder, fileName));
+                    TextProtocol.SendText(clientSocket, "Listo");
 
-                    bool received = FileTransferService.RecibirArchivo(clientSocket, destinationPath);
+                    bool received = SocketCommon.Services.FileTransferService.ReceiveFile(clientSocket, destinationPath);
                     if (received)
                     {
-                        TextMethods.SendText(clientSocket, "Recibido");
+                        TextProtocol.SendText(clientSocket, "Recibido");
                     }
                     else
                     {
-                        TextMethods.SendText(clientSocket, "Error. No encontrado");
+                        TextProtocol.SendText(clientSocket, "Error. No encontrado");
                     }
                     continue;
                 }
@@ -93,19 +95,19 @@ namespace Client
                     string fileName = command.Substring(10).Trim();
                     if (!Validators.Validators.IsValidFileName(fileName))
                     {
-                        TextMethods.SendText(clientSocket, "Error. Comando invalido");
+                        TextProtocol.SendText(clientSocket, "Error. Comando invalido");
                         continue;
                     }
 
                     string sourcePath = Path.Combine(userFilesFolder, fileName);
                     if (!File.Exists(sourcePath))
                     {
-                        TextMethods.SendText(clientSocket, "Error. No encontrado");
+                        TextProtocol.SendText(clientSocket, "Error. No encontrado");
                         continue;
                     }
 
-                    TextMethods.SendText(clientSocket, "Listo");
-                    FileTransferService.EnviarArchivo(clientSocket, sourcePath);
+                    TextProtocol.SendText(clientSocket, "Listo");
+                    SocketCommon.Services.FileTransferService.SendFile(clientSocket, sourcePath);
                     continue;
                 }
 
@@ -114,23 +116,23 @@ namespace Client
                     string fileName = command.Substring(7).Trim();
                     if (!Validators.Validators.IsValidFileName(fileName))
                     {
-                        TextMethods.SendText(clientSocket, "Error. Comando invalido");
+                        TextProtocol.SendText(clientSocket, "Error. Comando invalido");
                         continue;
                     }
 
                     string filePath = Path.Combine(userFilesFolder, fileName);
                     if (!File.Exists(filePath))
                     {
-                        TextMethods.SendText(clientSocket, "Error. No encontrado");
+                        TextProtocol.SendText(clientSocket, "Error. No encontrado");
                         continue;
                     }
 
                     File.Delete(filePath);
-                    TextMethods.SendText(clientSocket, "Recibido");
+                    TextProtocol.SendText(clientSocket, "Recibido");
                     continue;
                 }
 
-                TextMethods.SendText(clientSocket, "Error. Comando invalido");
+                TextProtocol.SendText(clientSocket, "Error. Comando invalido");
             }
         }
         finally

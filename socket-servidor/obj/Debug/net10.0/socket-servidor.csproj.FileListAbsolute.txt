@@ -12,3 +12,7 @@ C:\Users\victorduski\Documents\workspace\ProyectoFinalSistemasOperativos\socket-
 C:\Users\victorduski\Documents\workspace\ProyectoFinalSistemasOperativos\socket-servidor\obj\Debug\net10.0\socket-servidor.pdb
 C:\Users\victorduski\Documents\workspace\ProyectoFinalSistemasOperativos\socket-servidor\obj\Debug\net10.0\socket-servidor.genruntimeconfig.cache
 C:\Users\victorduski\Documents\workspace\ProyectoFinalSistemasOperativos\socket-servidor\obj\Debug\net10.0\ref\socket-servidor.dll
+C:\Users\victorduski\Documents\workspace\ProyectoFinalSistemasOperativos\socket-servidor\obj\Debug\net10.0\socket-servidor.csproj.AssemblyReference.cache
+C:\Users\victorduski\Documents\workspace\ProyectoFinalSistemasOperativos\socket-servidor\bin\Debug\net10.0\SocketCommon.dll
+C:\Users\victorduski\Documents\workspace\ProyectoFinalSistemasOperativos\socket-servidor\bin\Debug\net10.0\SocketCommon.pdb
+C:\Users\victorduski\Documents\workspace\ProyectoFinalSistemasOperativos\socket-servidor\obj\Debug\net10.0\socket-s.2AF38258.Up2Date

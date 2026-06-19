@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using SocketCommon.Services;
 
 class Program
 {
@@ -28,7 +29,7 @@ class Program
             clientSocket.Connect(serverEndPoint);
             Console.WriteLine("Conectado al servidor: " + serverEndPoint.ToString());
 
-            string serverPrompt = ReceiveText(clientSocket);
+            string serverPrompt = TextProtocol.ReceiveText(clientSocket);
             if (serverPrompt == null)
             {
                 Console.WriteLine("No se recibió prompt del servidor. Conexión cerrada.");
@@ -38,9 +39,9 @@ class Program
             Console.WriteLine(serverPrompt);
             //Console.Write("Nombre: ");
             string userName = Console.ReadLine()?.Trim() ?? string.Empty;
-            SendText(clientSocket, userName);
+            TextProtocol.SendText(clientSocket, userName);
 
-            string serverResponse = ReceiveText(clientSocket);
+            string serverResponse = TextProtocol.ReceiveText(clientSocket);
             if (serverResponse == null)
             {
                 Console.WriteLine("Servidor cerró la conexión.");
@@ -90,8 +91,8 @@ class Program
                         continue;
                     }
 
-                    SendText(clientSocket, input);
-                    string response = ReceiveText(clientSocket);
+                    TextProtocol.SendText(clientSocket, input);
+                    string response = TextProtocol.ReceiveText(clientSocket);
                     if (response == null)
                     {
                         Console.WriteLine("Conexión interrumpida por el servidor.");
@@ -100,8 +101,8 @@ class Program
 
                     if (response == "Listo")
                     {
-                        SendFile(clientSocket, sourcePath);
-                        string uploadResult = ReceiveText(clientSocket) ?? "Error. No encontrado";
+                        FileTransferService.SendFile(clientSocket, sourcePath);
+                        string uploadResult = TextProtocol.ReceiveText(clientSocket) ?? "Error. No encontrado";
                         Console.WriteLine(uploadResult);
                         if (uploadResult == "Recibido")
                         {
@@ -125,8 +126,8 @@ class Program
                         continue;
                     }
 
-                    SendText(clientSocket, input);
-                    string response = ReceiveText(clientSocket);
+                    TextProtocol.SendText(clientSocket, input);
+                    string response = TextProtocol.ReceiveText(clientSocket);
                     if (response == null)
                     {
                         Console.WriteLine("Conexión interrumpida por el servidor.");
@@ -136,7 +137,7 @@ class Program
                     if (response == "Listo")
                     {
                         string destinationPath = Path.Combine(DownloadsDirectory, fileName);
-                        bool received = ReceiveFile(clientSocket, destinationPath);
+                        bool received = FileTransferService.ReceiveFile(clientSocket, destinationPath);
                         Console.WriteLine(received ? $"Archivo descargado en LocalFiles/downloads/{fileName}" : "Error al recibir el archivo.");
                     }
                     else
@@ -149,8 +150,8 @@ class Program
 
                 if (input.StartsWith("borrar ", StringComparison.Ordinal))
                 {
-                    SendText(clientSocket, input);
-                    string response = ReceiveText(clientSocket);
+                    TextProtocol.SendText(clientSocket, input);
+                    string response = TextProtocol.ReceiveText(clientSocket);
                     if (response == null)
                     {
                         Console.WriteLine("Conexión interrumpida por el servidor.");
@@ -163,8 +164,8 @@ class Program
 
                 if (input == "listar servidor")
                 {
-                    SendText(clientSocket, input);
-                    string response = ReceiveText(clientSocket);
+                    TextProtocol.SendText(clientSocket, input);
+                    string response = TextProtocol.ReceiveText(clientSocket);
                     if (response == null)
                     {
                         Console.WriteLine("Conexión interrumpida por el servidor.");
@@ -186,8 +187,8 @@ class Program
 
                 if (input == "bye")
                 {
-                    SendText(clientSocket, input);
-                    string response = ReceiveText(clientSocket);
+                    TextProtocol.SendText(clientSocket, input);
+                    string response = TextProtocol.ReceiveText(clientSocket);
                     if (response != null)
                     {
                         Console.WriteLine(response);
@@ -196,8 +197,8 @@ class Program
                 }
 
                 // Enviar cualquier otro comando al servidor para recibir su validación.
-                SendText(clientSocket, input);
-                string fallbackResponse = ReceiveText(clientSocket);
+                TextProtocol.SendText(clientSocket, input);
+                string fallbackResponse = TextProtocol.ReceiveText(clientSocket);
                 if (fallbackResponse == null)
                 {
                     Console.WriteLine("Conexión interrumpida por el servidor.");
@@ -243,117 +244,15 @@ class Program
         string destinationPath = Path.Combine(UppedDirectory, fileName);
         if (File.Exists(destinationPath))
         {
-            destinationPath = GetUniqueFilePath(destinationPath);
+            destinationPath = PathHelper.GetUniqueFilePath(destinationPath);
         }
 
         File.Move(sourcePath, destinationPath);
         Console.WriteLine($"Archivo movido a LocalFiles/upped/{Path.GetFileName(destinationPath)}");
     }
+ 
 
-    static string GetUniqueFilePath(string filePath)
-    {
-        if (!File.Exists(filePath))
-        {
-            return filePath;
-        }
+   
 
-        string directory = Path.GetDirectoryName(filePath) ?? string.Empty;
-        string name = Path.GetFileNameWithoutExtension(filePath);
-        string extension = Path.GetExtension(filePath);
-        int counter = 1;
-        string candidate;
-
-        do
-        {
-            candidate = Path.Combine(directory, $"{name}({counter}){extension}");
-            counter++;
-        }
-        while (File.Exists(candidate));
-
-        return candidate;
-    }
-
-    static void SendText(Socket socket, string text)
-    {
-        byte[] data = Encoding.UTF8.GetBytes(text + "\n");
-        socket.Send(data);
-    }
-
-    static string ReceiveText(Socket socket)
-    {
-        var builder = new StringBuilder();
-        byte[] buffer = new byte[1024];
-
-        while (true)
-        {
-            int bytesRead = socket.Receive(buffer);
-            if (bytesRead == 0)
-            {
-                return "null";
-            }
-
-            builder.Append(Encoding.UTF8.GetString(buffer, 0, bytesRead));
-            if (builder.ToString().Contains("\n"))
-            {
-                break;
-            }
-
-            if (bytesRead < buffer.Length)
-            {
-                break;
-            }
-        }
-
-        string result = builder.ToString();
-        int newlineIndex = result.IndexOf('\n');
-        if (newlineIndex >= 0)
-        {
-            result = result.Substring(0, newlineIndex);
-        }
-
-        return result;
-    }
-
-    static void SendFile(Socket socket, string path)
-    {
-        FileInfo fileInfo = new FileInfo(path);
-        SendText(socket, fileInfo.Length.ToString());
-
-        using FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read);
-        byte[] buffer = new byte[8192];
-        int bytesRead;
-
-        while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
-        {
-            socket.Send(buffer, bytesRead, SocketFlags.None);
-        }
-    }
-
-    static bool ReceiveFile(Socket socket, string destinationPath)
-    {
-        string sizeText = ReceiveText(socket);
-        if (string.IsNullOrEmpty(sizeText) || !long.TryParse(sizeText.Trim(), out long fileSize) || fileSize < 0)
-        {
-            return false;
-        }
-
-        using FileStream stream = new FileStream(destinationPath, FileMode.Create, FileAccess.Write);
-        long remaining = fileSize;
-        byte[] buffer = new byte[8192];
-
-        while (remaining > 0)
-        {
-            int toRead = remaining > buffer.Length ? buffer.Length : (int)remaining;
-            int bytesRead = socket.Receive(buffer, 0, toRead, SocketFlags.None);
-            if (bytesRead <= 0)
-            {
-                return false;
-            }
-
-            stream.Write(buffer, 0, bytesRead);
-            remaining -= bytesRead;
-        }
-
-        return true;
-    }
 }
+    
