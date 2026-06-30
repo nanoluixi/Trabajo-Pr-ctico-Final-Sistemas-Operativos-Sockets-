@@ -4,6 +4,7 @@ using System.Text;
 namespace SocketCommon.Services
 {
     public static class TextProtocol
+    //Protocolos para el envio y recibo de mensajes entre sockets
     {
         public static void SendText(Socket socket, string text)
         {

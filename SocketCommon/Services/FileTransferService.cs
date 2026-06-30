@@ -4,6 +4,7 @@ namespace SocketCommon.Services
 {
     public static class FileTransferService
     {
+        //Servicios de transferencia de archivos comunes entre cliente-servidor
         private const int BufferSize = 8192;
 
         public static void SendFile(Socket socket, string sourcePath)
