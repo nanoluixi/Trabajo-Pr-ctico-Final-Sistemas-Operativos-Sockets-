@@ -8,7 +8,6 @@ namespace SocketCommon.Services
             {
                 return filePath;
             }
-
             string directory = Path.GetDirectoryName(filePath) ?? string.Empty;
             string name = Path.GetFileNameWithoutExtension(filePath);
             string extension = Path.GetExtension(filePath);
@@ -21,7 +20,6 @@ namespace SocketCommon.Services
                 counter++;
             }
             while (File.Exists(candidate));
-
             return candidate;
         }
     }

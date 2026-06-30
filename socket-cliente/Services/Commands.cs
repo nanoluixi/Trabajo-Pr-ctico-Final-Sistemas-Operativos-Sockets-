@@ -11,7 +11,6 @@ namespace Commands
         {
             while (true)
             {
-                Console.WriteLine("Ingrese comandos: listar local, listar servidor, subir <archivo>, descargar <archivo>, borrar <archivo>, bye");
                 Console.Write("> ");
                 string? input = Console.ReadLine()?.Trim();
                 if (string.IsNullOrEmpty(input))

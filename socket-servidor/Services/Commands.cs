@@ -123,7 +123,7 @@ namespace Commands
                     continue;
                 }
                 // Si no hay match informar al usuario
-                TextProtocol.SendText(clientSocket, "Error. Comando invalido");
+                TextProtocol.SendText(clientSocket, "Error. Comando invalido, envie 'help' para conocer los comandos disponibles.");
             }
         }
     }
