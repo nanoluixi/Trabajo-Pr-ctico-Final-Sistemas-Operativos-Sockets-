@@ -52,7 +52,7 @@ class Program
                 Console.WriteLine(serverResponse);
                 return;
             }
-            if(serverResponse == "Verfificado")
+            if(serverResponse == "Verificado")
             {
                 Console.WriteLine("Usuario verificado por el servidor.");
             }

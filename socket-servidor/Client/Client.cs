@@ -23,7 +23,7 @@ namespace Client
             //Cargar los logs
             LogMethods.LogServer($"Cliente {userName} conectado", LogsDirectory);
             LogMethods.LogUser(userName, "Sesion iniciada", UsersDirectory);
-            TextProtocol.SendText(clientSocket, "Verfificado");//Enviar un check al cliente
+            TextProtocol.SendText(clientSocket, "Verificado");//Enviar un check al cliente
             try
             {   //Instruction Decode
                 Decode.commandDecode(clientSocket, userName, LogsDirectory, UsersDirectory, userFilesFolder);

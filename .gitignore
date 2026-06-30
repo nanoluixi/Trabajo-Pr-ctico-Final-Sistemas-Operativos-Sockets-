@@ -1,4 +1,40 @@
+# Archivos de contexto del proyecto
 contexto.md
-Users
-Logs
-LocalFiles
+
+# Carpetas de usuario y datos
+Users/
+Logs/
+LocalFiles/
+
+# Carpetas generadas por compilación de .NET
+bin/
+obj/
+
+# Archivos de compilación
+*.dll
+*.exe
+*.pdb
+*.so
+*.dylib
+
+# Archivos de Visual Studio
+.vs/
+*.sln.docstates
+.vscode/settings.json
+*.user
+*.userosscache
+*.sln.user
+*.suo
+
+# Archivos de configuración temporal
+*.tmp
+*.log
+
+# Archivos del Sistema Operativo
+Thumbs.db
+.DS_Store
+
+# Archivos de IDE
+.idea/
+*.swp
+*.swo
