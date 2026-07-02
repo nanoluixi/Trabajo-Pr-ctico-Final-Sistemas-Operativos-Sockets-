@@ -9,6 +9,15 @@ namespace Commands
     {
         public static void commandDecode(Socket clientSocket, string UpDirectory, string DownloadsDirectory, string UppedDirectory)
         {
+            string[] comandosDisponibles = [
+                "Comandos",
+                "bye: Para salir del servidor.",
+                "listar servidor: Para listar los archivos del servidor.",
+                "listar local: Para listar los archivos locales.",
+                "subir [nombre_de_archivo.extensión]: Para subir un archivo de la carpeta up al servidor.",
+                "descargar [nombre_de_archivo.extensión]: Para descargar un archivo que esté subido en el servidor.",
+                "borrar [nombre_de_archivo.extensión]: Para borrar un archivo que esté subido al servidor.",
+                "help: Para ver los comandos disponibles."];
             while (true)
             {
                 Console.Write("> ");
@@ -62,7 +71,6 @@ namespace Commands
                     {
                         Console.WriteLine(response);
                     }
-
                     continue;
                 }
 
@@ -143,6 +151,15 @@ namespace Commands
                         Console.WriteLine(response);
                     }
                     break;
+                }
+                if(input == "help")
+                {
+                    TextProtocol.SendText(clientSocket, "help");
+                    foreach (var comando in comandosDisponibles)
+                    {
+                        Console.WriteLine(comando);
+                    }
+                    continue;
                 }
 
                 // Enviar cualquier otro comando al servidor para recibir su validación.

@@ -9,6 +9,14 @@ namespace Commands
     {
         public static void commandDecode(Socket clientSocket, string userName, string LogsDirectory, string UsersDirectory, string userFilesFolder)
         {
+            /*Comandos disponibles:
+                    bye: Salir
+                    listar servidor: Lista los archivos del servidor
+                    subir: Sube archivos al servidor (recibe archivos)
+                    descargar: Descarga archivos del servidor (enviar archivos)
+                    borrar: Borra un archivo del servidor
+                    help: Envia al usuario los comandos disponibles
+                */
             while (true)
             {
                 string command = TextProtocol.ReceiveText(clientSocket);
@@ -28,13 +36,6 @@ namespace Commands
 
                 LogMethods.LogServer($"{userName} -> {command}", LogsDirectory);
                 LogMethods.LogUser(userName, command, UsersDirectory);
-                /*Comandos disponibles:
-                    bye: Salir
-                    listar servidor: Lista los archivos del servidor
-                    subir: Sube archivos al servidor (recibe archivos)
-                    descargar: Descarga archivos del servidor (enviar archivos)
-                    borrar: Borra un archivo del servidor
-                */
 
                 if (command == "bye")
                 {

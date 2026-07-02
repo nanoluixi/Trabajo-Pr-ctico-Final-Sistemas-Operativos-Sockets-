@@ -1,8 +1,6 @@
 ﻿//Socket servidor
 using System.Net;
 using System.Net.Sockets;
-
-
 class Program
 {
     //Declaración de directorios
@@ -12,7 +10,6 @@ class Program
 
     static void Main(string[] args)
     {
-
         Directory.CreateDirectory(LogsDirectory);
         Directory.CreateDirectory(UsersDirectory);
         //Declaración del socket
@@ -20,7 +17,6 @@ class Program
         IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Any, 8080);//En local en el puerto 8080
         serverSocket.Bind(localEndPoint);
         serverSocket.Listen(1);//Poner al socket en modo escucha
-
         Console.WriteLine("Servidor escuchando en el puerto 8080...");
         //Esperar infinitamente, o hasta que se cierre el servidor que se conecte un cliente
         while (true)

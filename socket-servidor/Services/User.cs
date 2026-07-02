@@ -14,7 +14,6 @@ namespace User
                 TextProtocol.SendText(socket, "Error. Nombre invalido");
                 return string.Empty;
             }
-
             return userName;
         }
     }
