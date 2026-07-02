@@ -1,10 +1,8 @@
 ﻿//Socket cliente
 
-using System;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
+
 using SocketCommon.Services;
 using Commands;
 
@@ -57,7 +55,6 @@ class Program
                 Console.WriteLine("Usuario verificado por el servidor.");
             }
             Console.WriteLine("Sesión iniciada como: " + userName);
-
             //CommandDecode
             Decode.commandDecode(clientSocket, UpDirectory, DownloadsDirectory, UppedDirectory);
         }
@@ -71,7 +68,6 @@ class Program
             {
                 clientSocket.Close();
             }
-
             Console.WriteLine("Conexión cerrada.");
         }
     }
