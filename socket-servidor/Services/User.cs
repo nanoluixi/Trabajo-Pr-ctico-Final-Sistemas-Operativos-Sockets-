@@ -7,11 +7,11 @@ namespace User
         public static string RequestUserName(Socket socket)
         {
             //Método para solicitar el nombre de usuario al usuario que se conectó al socket.
-            TextProtocol.SendText(socket, "Nombre:");
+            TextProtocol.SendText(socket, "Servidor: ¿Nombre?");
             string? userName = TextProtocol.ReceiveText(socket)?.Trim();
             if (string.IsNullOrEmpty(userName) || !Validators.Validators.IsValidUserName(userName))
             {
-                TextProtocol.SendText(socket, "Error. Nombre invalido");
+                TextProtocol.SendText(socket, "Servidor: Error. Nombre invalido");
                 return string.Empty;
             }
             return userName;

@@ -29,7 +29,12 @@ namespace Commands
 
                 if (input == "listar local")
                 {
-                    ListLocalFiles(UpDirectory);
+                    ListLocalFiles(UpDirectory, "LocalFiles/up.");
+                    continue;
+                }
+                if (input == "listar descargas")
+                {
+                    ListLocalFiles(DownloadsDirectory, "LocalFiles/dowloads");
                     continue;
                 }
 
@@ -57,12 +62,12 @@ namespace Commands
                         break;
                     }
 
-                    if (response == "Listo")
+                    if (response == "Servidor: Listo")
                     {
                         FileTransferService.SendFile(clientSocket, sourcePath);
                         string uploadResult = TextProtocol.ReceiveText(clientSocket) ?? "Error. No encontrado";
                         Console.WriteLine(uploadResult);
-                        if (uploadResult == "Recibido")
+                        if (uploadResult == "Servidor: Recibido")
                         {
                             MoveUploadedFile(fileName, sourcePath, UppedDirectory);
                         }
@@ -91,7 +96,7 @@ namespace Commands
                         break;
                     }
 
-                    if (response == "Listo")
+                    if (response == "Servidor: Listo")
                     {
                         string destinationPath = Path.Combine(DownloadsDirectory, fileName);
                         bool received = FileTransferService.ReceiveFile(clientSocket, destinationPath);
@@ -141,6 +146,7 @@ namespace Commands
 
                     continue;
                 }
+                
 
                 if (input == "bye")
                 {
@@ -176,16 +182,16 @@ namespace Commands
         }
 
         //Listar local y moveUp
-        static void ListLocalFiles(string UpDirectory)
+        static void ListLocalFiles(string UpDirectory, string nombreDirectorio)
         {
             string[] files = Directory.GetFiles(UpDirectory);
             if (files.Length == 0)
             {
-                Console.WriteLine("No hay archivos en LocalFiles/up.");
+                Console.WriteLine("No hay archivos en "+ nombreDirectorio);
                 return;
             }
 
-            Console.WriteLine("Archivos en LocalFiles/up:");
+            Console.WriteLine("Archivos en "+nombreDirectorio+":");
             foreach (string file in files)
             {
                 Console.WriteLine(Path.GetFileName(file));
