@@ -66,7 +66,8 @@ dotnet build socket-servidor.sln
 Abre una terminal en la carpeta raíz y ejecuta:
 
 ```bash
-dotnet run --project socket-servidor/socket-servidor.csproj
+cd socket-servidor
+dotnet run 
 ```
 
 El servidor creará automáticamente los directorios:
@@ -78,7 +79,8 @@ El servidor creará automáticamente los directorios:
 Abre otra terminal y ejecuta:
 
 ```bash
-dotnet run --project socket-cliente/socket-cliente.csproj
+cd socket-cliente
+dotnet run 
 ```
 
 El cliente creará automáticamente los directorios locales:
