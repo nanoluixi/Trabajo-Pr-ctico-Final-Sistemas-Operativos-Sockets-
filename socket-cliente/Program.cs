@@ -28,7 +28,7 @@ class Program
             clientSocket.Connect(serverEndPoint);
             Console.WriteLine("Conectado al servidor: " + serverEndPoint.ToString());
 
-            string serverPrompt = TextProtocol.ReceiveText(clientSocket);
+            string? serverPrompt = TextProtocol.ReceiveText(clientSocket);
             if (serverPrompt == null)
             {
                 Console.WriteLine("No se recibió prompt del servidor. Conexión cerrada.");
@@ -38,7 +38,7 @@ class Program
             string userName = Console.ReadLine()?.Trim() ?? string.Empty;
             TextProtocol.SendText(clientSocket, userName);
 
-            string serverResponse = TextProtocol.ReceiveText(clientSocket);
+            string? serverResponse = TextProtocol.ReceiveText(clientSocket);
             if (serverResponse == null)
             {
                 Console.WriteLine("Servidor cerró la conexión.");
