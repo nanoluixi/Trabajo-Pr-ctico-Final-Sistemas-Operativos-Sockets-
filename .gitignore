@@ -17,6 +17,9 @@ obj/
 *.so
 *.dylib
 
+# Archivos de contexto del proyecto
+.atl/
+
 # Archivos de Visual Studio
 .vs/
 *.sln.docstates
