@@ -9,15 +9,6 @@ namespace Commands
     {
         public static void commandDecode(Socket clientSocket, string UpDirectory, string DownloadsDirectory, string UppedDirectory)
         {
-            string[] comandosDisponibles = [
-                "Comandos",
-                "bye: Para salir del servidor.",
-                "listar servidor: Para listar los archivos del servidor.",
-                "listar local: Para listar los archivos locales.",
-                "subir [nombre_de_archivo.extensión]: Para subir un archivo de la carpeta up al servidor.",
-                "descargar [nombre_de_archivo.extensión]: Para descargar un archivo que esté subido en el servidor.",
-                "borrar [nombre_de_archivo.extensión]: Para borrar un archivo que esté subido al servidor.",
-                "help: Para ver los comandos disponibles."];
             while (true)
             {
                 Console.Write("> ");
@@ -55,7 +46,7 @@ namespace Commands
                     }
 
                     TextProtocol.SendText(clientSocket, input);
-                    string response = TextProtocol.ReceiveText(clientSocket);
+                    string? response = TextProtocol.ReceiveText(clientSocket);
                     if (response == null)
                     {
                         Console.WriteLine("Conexión interrumpida por el servidor.");
@@ -89,7 +80,7 @@ namespace Commands
                     }
 
                     TextProtocol.SendText(clientSocket, input);
-                    string response = TextProtocol.ReceiveText(clientSocket);
+                    string? response = TextProtocol.ReceiveText(clientSocket);
                     if (response == null)
                     {
                         Console.WriteLine("Conexión interrumpida por el servidor.");
@@ -113,7 +104,7 @@ namespace Commands
                 if (input.StartsWith("borrar ", StringComparison.Ordinal))
                 {
                     TextProtocol.SendText(clientSocket, input);
-                    string response = TextProtocol.ReceiveText(clientSocket);
+                    string? response = TextProtocol.ReceiveText(clientSocket);
                     if (response == null)
                     {
                         Console.WriteLine("Conexión interrumpida por el servidor.");
@@ -127,21 +118,28 @@ namespace Commands
                 if (input == "listar servidor")
                 {
                     TextProtocol.SendText(clientSocket, input);
-                    string response = TextProtocol.ReceiveText(clientSocket);
+                    string? response = TextProtocol.ReceiveText(clientSocket);
                     if (response == null)
                     {
                         Console.WriteLine("Conexión interrumpida por el servidor.");
                         break;
                     }
 
-                    if (string.IsNullOrWhiteSpace(response))
+                    if (response.StartsWith("Servidor:"))
                     {
-                        Console.WriteLine("No hay archivos en el servidor.");
+                        Console.WriteLine(response);
                     }
                     else
                     {
                         Console.WriteLine("Archivos en servidor:");
                         Console.WriteLine(response);
+                        while (true)
+                        {
+                            response = TextProtocol.ReceiveText(clientSocket);
+                            if (response == null || string.IsNullOrEmpty(response))
+                                break;
+                            Console.WriteLine(response);
+                        }
                     }
 
                     continue;
@@ -151,7 +149,7 @@ namespace Commands
                 if (input == "bye")
                 {
                     TextProtocol.SendText(clientSocket, input);
-                    string response = TextProtocol.ReceiveText(clientSocket);
+                    string? response = TextProtocol.ReceiveText(clientSocket);
                     if (response != null)
                     {
                         Console.WriteLine(response);
@@ -161,16 +159,19 @@ namespace Commands
                 if(input == "help")
                 {
                     TextProtocol.SendText(clientSocket, "help");
-                    foreach (var comando in comandosDisponibles)
+                    while (true)
                     {
-                        Console.WriteLine(comando);
+                        string? helpResponse = TextProtocol.ReceiveText(clientSocket);
+                        if (helpResponse == null || string.IsNullOrEmpty(helpResponse))
+                            break;
+                        Console.WriteLine(helpResponse);
                     }
                     continue;
                 }
 
                 // Enviar cualquier otro comando al servidor para recibir su validación.
                 TextProtocol.SendText(clientSocket, input);
-                string fallbackResponse = TextProtocol.ReceiveText(clientSocket);
+                string? fallbackResponse = TextProtocol.ReceiveText(clientSocket);
                 if (fallbackResponse == null)
                 {
                     Console.WriteLine("Conexión interrumpida por el servidor.");

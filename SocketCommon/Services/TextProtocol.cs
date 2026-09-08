@@ -12,48 +12,38 @@ namespace SocketCommon.Services
             socket.Send(data);
         }
 
-        public static string ReceiveText(Socket socket)
+        public static string? ReceiveText(Socket socket)
         {
             var builder = new StringBuilder();
-            byte[] buffer = new byte[1024];
 
             while (true)
             {
+                byte[] oneByte = new byte[1];
                 int bytesRead;
                 try
                 {
-                    bytesRead = socket.Receive(buffer);
+                    bytesRead = socket.Receive(oneByte, 0, 1, SocketFlags.None);
                 }
                 catch
                 {
-                    return "null";
+                    return null;
                 }
 
                 if (bytesRead == 0)
                 {
-                    return "null";
+                    return null;
                 }
 
-                builder.Append(Encoding.UTF8.GetString(buffer, 0, bytesRead));
-                if (builder.ToString().Contains("\n"))
+                char c = (char)oneByte[0];
+                if (c == '\n')
                 {
                     break;
                 }
 
-                if (bytesRead < buffer.Length)
-                {
-                    break;
-                }
+                builder.Append(c);
             }
 
-            string result = builder.ToString();
-            int newlineIndex = result.IndexOf('\n');
-            if (newlineIndex >= 0)
-            {
-                result = result.Substring(0, newlineIndex);
-            }
-
-            return result;
+            return builder.ToString();
         }
     }
 }

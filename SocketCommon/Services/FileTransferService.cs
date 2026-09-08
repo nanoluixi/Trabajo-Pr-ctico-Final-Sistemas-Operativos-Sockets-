@@ -24,7 +24,7 @@ namespace SocketCommon.Services
 
         public static bool ReceiveFile(Socket socket, string destinationPath)
         {
-            string sizeText = TextProtocol.ReceiveText(socket);
+            string? sizeText = TextProtocol.ReceiveText(socket);
             if (string.IsNullOrEmpty(sizeText) || !long.TryParse(sizeText.Trim(), out long fileSize) || fileSize < 0)
             {
                 return false;

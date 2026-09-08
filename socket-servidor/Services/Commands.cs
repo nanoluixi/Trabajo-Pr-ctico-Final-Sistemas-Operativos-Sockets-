@@ -19,7 +19,7 @@ namespace Commands
                 */
             while (true)
             {
-                string command = TextProtocol.ReceiveText(clientSocket);
+                string? command = TextProtocol.ReceiveText(clientSocket);
                 //DecodeCommand(command)
                 if (command == null)
                 {
@@ -52,8 +52,11 @@ namespace Commands
                     }
                     else
                     {
-                        string result = string.Join("\n", Array.ConvertAll(files, Path.GetFileName));
-                        TextProtocol.SendText(clientSocket, "Servidor: "+result);
+                        foreach (string file in files)
+                        {
+                            TextProtocol.SendText(clientSocket, Path.GetFileName(file));
+                        }
+                        TextProtocol.SendText(clientSocket, "");
                     }
                     continue;
                 }
@@ -123,6 +126,18 @@ namespace Commands
                     TextProtocol.SendText(clientSocket, "Servidor: Recibido");
                     continue;
                 }
+                if (command == "help")
+                {
+                    TextProtocol.SendText(clientSocket, "Comandos:");
+                    TextProtocol.SendText(clientSocket, "bye: Para salir del servidor.");
+                    TextProtocol.SendText(clientSocket, "listar servidor: Para listar los archivos del servidor.");
+                    TextProtocol.SendText(clientSocket, "subir [archivo.ext]: Para subir un archivo de la carpeta up al servidor.");
+                    TextProtocol.SendText(clientSocket, "descargar [archivo.ext]: Para descargar un archivo subido en el servidor.");
+                    TextProtocol.SendText(clientSocket, "borrar [archivo.ext]: Para borrar un archivo subido al servidor.");
+                    TextProtocol.SendText(clientSocket, "");
+                    continue;
+                }
+
                 // Si no hay match informar al usuario
                 TextProtocol.SendText(clientSocket, "Servidor: "+"Error. Comando invalido, envie 'help' para conocer los comandos disponibles.");
             }
